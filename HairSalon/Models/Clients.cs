@@ -1,32 +1,91 @@
 using System.Collections.Generic;
-using MySql.Data.MySqlClient;
 using System;
+using MySql.Data.MySqlClient;
 
 namespace RestaurantList.Models
 {
-  public class Cuisine
+  public class Restaurant
   {
-    public string Name { get; set;}
-    public int Id { get; set;}
+    public string Name {get; set;}
+    public int CuisineId {get; set;}
+    public int Id {get; set;}
 
-    public Cuisine(string cuisineName, int id = 0)
+    public Restaurant (string name, int cuisineId, int id = 0)
     {
-      Name = cuisineName;
+      Name = name;
+      CuisineId = cuisineId;
       Id = id;
     }
 
-    public override bool Equals(System.Object otherCuisine)
+
+    public void SetName(string newName)
     {
-      if (!(otherCuisine is Cuisine))
+      Name = newName;
+    }
+
+
+    public void SetId(int newId)
+    {
+      Id = newId;
+    }
+    public int GetCuisineId()
+    {
+      return CuisineId;
+    }
+
+    public static List<Restaurant> GetAll()
+    {
+      List<Restaurant> allRestaurants = new List<Restaurant> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM restaurants;";
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        int restaurantId = rdr.GetInt32(0);
+        string restaurantName = rdr.GetString(1);
+        int restaurantCuisineId = rdr.GetInt32(2);
+        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
+        allRestaurants.Add(newRestaurant);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allRestaurants;
+    }
+
+
+
+    public static void ClearAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM restaurants;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public override bool Equals(System.Object otherRestaurant)
+    {
+      if (!(otherRestaurant is Restaurant))
       {
         return false;
       }
       else
       {
-        Cuisine newCuisine = (Cuisine) otherCuisine;
-        bool idEquality = this.Id.Equals(newCuisine.Id);
-        bool nameEquality = this.Name.Equals(newCuisine.Name);
-        return (idEquality && nameEquality);
+        Restaurant newRestaurant = (Restaurant) otherRestaurant;
+        bool idEquality = this.Id == newRestaurant.Id;
+        bool nameEquality = this.Name == newRestaurant.Name;
+        bool cuisineEquality = this.CuisineId == newRestaurant.CuisineId;
+        return (idEquality && nameEquality && cuisineEquality);
       }
     }
 
@@ -35,11 +94,15 @@ namespace RestaurantList.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO cuisine (name) VALUES (@name);";
+      cmd.CommandText = @"INSERT INTO restaurants (name, cuisine_id) VALUES (@name, @cuisine_id);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this.Name;
       cmd.Parameters.Add(name);
+      MySqlParameter cuisineId = new MySqlParameter();
+      cuisineId.ParameterName = "@cuisine_id";
+      cuisineId.Value = this.CuisineId;
+      cmd.Parameters.Add(cuisineId);
       cmd.ExecuteNonQuery();
       Id = (int) cmd.LastInsertedId;
       conn.Close();
@@ -49,69 +112,51 @@ namespace RestaurantList.Models
       }
     }
 
-    public override int GetHashCode()
-    {
-      return this.Id.GetHashCode();
-    }
-
-    public static List<Cuisine> GetAll()
-    {
-      List<Cuisine> allCategories = new List<Cuisine> {};
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM cuisine;";
-      var rdr = cmd.ExecuteReader() as MySqlDataReader;
-      while(rdr.Read())
-      {
-        int CuisineId = rdr.GetInt32(0);
-        string CuisineName = rdr.GetString(1);
-        Cuisine newCuisine = new Cuisine(CuisineName, CuisineId); // <-- This line now has two arguments
-        allCategories.Add(newCuisine);
-      }
-      conn.Close();
-      if (conn != null)
-      {
-        conn.Dispose();
-      }
-      return allCategories;
-    }
-
-
-    public static Cuisine Find(int id)
+    public static Restaurant Find(int id)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM cuisine WHERE id = (@searchId);";
+      cmd.CommandText = @"SELECT * FROM restaurants WHERE id = (@searchId);";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = id;
       cmd.Parameters.Add(searchId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
-      int CuisineId = 0;
-      string CuisineName = "";
+      int restaurantId = 0;
+      string restaurantName = "";
+      int restaurantCuisineId = 0;
       while(rdr.Read())
       {
-        CuisineId = rdr.GetInt32(0);
-        CuisineName = rdr.GetString(1);
+        restaurantId = rdr.GetInt32(0);
+        restaurantName = rdr.GetString(1);
+        restaurantCuisineId = rdr.GetInt32(2);
       }
-      Cuisine newCuisine = new Cuisine(CuisineName, CuisineId);
+      Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return newCuisine;
+      return newRestaurant;
     }
 
-    public static void ClearAll()
+    public void Edit(string newName)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM cuisine;";
+      cmd.CommandText = @"UPDATE restaurants SET name = @newName WHERE id = @searchId;";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = Id;
+      cmd.Parameters.Add(searchId);
+      MySqlParameter name = new MySqlParameter();
+      name.ParameterName = "@newName";
+      name.Value = newName;
+      cmd.Parameters.Add(name);
       cmd.ExecuteNonQuery();
+      Name = newName;
       conn.Close();
       if (conn != null)
       {
@@ -119,62 +164,16 @@ namespace RestaurantList.Models
       }
     }
 
-
-    public List<Restaurant> GetRestaurants()
-    {
-      List<Restaurant> allCuisineRestaurants = new List<Restaurant> {};
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM restaurants WHERE cuisine_id = @cuisine_id;";
-      MySqlParameter cuisineId = new MySqlParameter();
-      cuisineId.ParameterName = "@cuisine_id";
-      cuisineId.Value = this.Id;
-      cmd.Parameters.Add(cuisineId);
-      var rdr = cmd.ExecuteReader() as MySqlDataReader;
-      while(rdr.Read())
-      {
-        int restaurantId = rdr.GetInt32(0);
-        string restaurantName = rdr.GetString(1);
-        int restaurantCuisineId = rdr.GetInt32(2);
-        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
-        allCuisineRestaurants.Add(newRestaurant);
-      }
-      conn.Close();
-      if (conn != null)
-      {
-        conn.Dispose();
-      }
-      return allCuisineRestaurants;
-    }
-
-
-    public static void DeleteAll()
+    public void DeleteRestaurant()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM cuisine;";
-      cmd.ExecuteNonQuery();
-      conn.Close();
-      if (conn != null)
-      {
-        conn.Dispose();
-      }
-    }
-
-    public void DeleteCuisine()
-    {
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM restaurants WHERE cuisine_id = @thisId;";
+      cmd.CommandText = @"DELETE FROM restaurants WHERE id = @thisId;";
       MySqlParameter thisId = new MySqlParameter();
       thisId.ParameterName = "@thisId";
       thisId.Value = Id;
       cmd.Parameters.Add(thisId);
-      cmd.ExecuteNonQuery();
-      cmd.CommandText = @"DELETE FROM cuisine WHERE id = @thisId;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
