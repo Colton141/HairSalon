@@ -2,18 +2,18 @@ using System.Collections.Generic;
 using System;
 using MySql.Data.MySqlClient;
 
-namespace RestaurantList.Models
+namespace HairSalon.Models
 {
-  public class Restaurant
+  public class Client
   {
     public string Name {get; set;}
-    public int CuisineId {get; set;}
+    public int HairStylistId {get; set;}
     public int Id {get; set;}
 
-    public Restaurant (string name, int cuisineId, int id = 0)
+    public Client (string name, int hairStylistId, int id = 0)
     {
       Name = name;
-      CuisineId = cuisineId;
+      HairStylistId = hairStylistId;
       Id = id;
     }
 
@@ -28,14 +28,14 @@ namespace RestaurantList.Models
     {
       Id = newId;
     }
-    public int GetCuisineId()
+    public int GetHairStylistId()
     {
-      return CuisineId;
+      return HairStylistId;
     }
 
-    public static List<Restaurant> GetAll()
+    public static List<Client> GetAll()
     {
-      List<Restaurant> allRestaurants = new List<Restaurant> {};
+      List<Client> allClients = new List<Client> {};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
@@ -45,16 +45,16 @@ namespace RestaurantList.Models
       {
         int restaurantId = rdr.GetInt32(0);
         string restaurantName = rdr.GetString(1);
-        int restaurantCuisineId = rdr.GetInt32(2);
-        Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
-        allRestaurants.Add(newRestaurant);
+        int restaurantHairStylistId = rdr.GetInt32(2);
+        Client newClient = new Client(restaurantName, restaurantHairStylistId, restaurantId);
+        allClients.Add(newClient);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allRestaurants;
+      return allClients;
     }
 
 
@@ -73,19 +73,19 @@ namespace RestaurantList.Models
       }
     }
 
-    public override bool Equals(System.Object otherRestaurant)
+    public override bool Equals(System.Object otherClient)
     {
-      if (!(otherRestaurant is Restaurant))
+      if (!(otherClient is Client))
       {
         return false;
       }
       else
       {
-        Restaurant newRestaurant = (Restaurant) otherRestaurant;
-        bool idEquality = this.Id == newRestaurant.Id;
-        bool nameEquality = this.Name == newRestaurant.Name;
-        bool cuisineEquality = this.CuisineId == newRestaurant.CuisineId;
-        return (idEquality && nameEquality && cuisineEquality);
+        Client newClient = (Client) otherClient;
+        bool idEquality = this.Id == newClient.Id;
+        bool nameEquality = this.Name == newClient.Name;
+        bool hairStylistEquality = this.HairStylistId == newClient.HairStylistId;
+        return (idEquality && nameEquality && hairStylistEquality);
       }
     }
 
@@ -94,15 +94,15 @@ namespace RestaurantList.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO restaurants (name, cuisine_id) VALUES (@name, @cuisine_id);";
+      cmd.CommandText = @"INSERT INTO restaurants (name, hairStylist_id) VALUES (@name, @hairStylist_id);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this.Name;
       cmd.Parameters.Add(name);
-      MySqlParameter cuisineId = new MySqlParameter();
-      cuisineId.ParameterName = "@cuisine_id";
-      cuisineId.Value = this.CuisineId;
-      cmd.Parameters.Add(cuisineId);
+      MySqlParameter hairStylistId = new MySqlParameter();
+      hairStylistId.ParameterName = "@hairStylist_id";
+      hairStylistId.Value = this.HairStylistId;
+      cmd.Parameters.Add(hairStylistId);
       cmd.ExecuteNonQuery();
       Id = (int) cmd.LastInsertedId;
       conn.Close();
@@ -112,7 +112,7 @@ namespace RestaurantList.Models
       }
     }
 
-    public static Restaurant Find(int id)
+    public static Client Find(int id)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
@@ -125,20 +125,20 @@ namespace RestaurantList.Models
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       int restaurantId = 0;
       string restaurantName = "";
-      int restaurantCuisineId = 0;
+      int restaurantHairStylistId = 0;
       while(rdr.Read())
       {
         restaurantId = rdr.GetInt32(0);
         restaurantName = rdr.GetString(1);
-        restaurantCuisineId = rdr.GetInt32(2);
+        restaurantHairStylistId = rdr.GetInt32(2);
       }
-      Restaurant newRestaurant = new Restaurant(restaurantName, restaurantCuisineId, restaurantId);
+      Client newClient = new Client(restaurantName, restaurantHairStylistId, restaurantId);
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return newRestaurant;
+      return newClient;
     }
 
     public void Edit(string newName)
@@ -164,7 +164,7 @@ namespace RestaurantList.Models
       }
     }
 
-    public void DeleteRestaurant()
+    public void DeleteClient()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
