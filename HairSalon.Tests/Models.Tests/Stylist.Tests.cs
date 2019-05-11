@@ -1,44 +1,44 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestaurantList.Models;
+using HairSalon.Models;
 using System.Collections.Generic;
 using System;
 
-namespace RestaurantList.Tests
+namespace HairSalon.Tests
 {
   [TestClass]
-  public class CuisineTest: IDisposable
+  public class StylistTest: IDisposable
   {
     public void Dispose()
     {
-      Cuisine.ClearAll();
-      Restaurant.ClearAll();
+      Stylist.ClearAll();
+      Client.ClearAll();
     }
-    public CuisineTest()
+    public StylistTest()
     {
-      DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=restaurant_list_test;";
+      DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=colton_lacey_test;";
     }
 
     [TestMethod]
-    public void Equals_ReturnsTrueIfNamesAreTheSame_Cuisine()
+    public void Equals_ReturnsTrueIfNamesAreTheSame_Stylist()
     {
-      Cuisine firstCuisine = new Cuisine("Edible");
-      Cuisine secondCuisine = new Cuisine("Edible");
+      Stylist firstStylist = new Stylist("Edible");
+      Stylist secondStylist = new Stylist("Edible");
 
-      Assert.AreEqual(firstCuisine, secondCuisine);
+      Assert.AreEqual(firstStylist, secondStylist);
     }
 
     [TestMethod]
-    public void GetAll_ReturnsAllCuisineObjects_CuisineList()
+    public void GetAll_ReturnsAllStylistObjects_StylistList()
     {
       string name01 = "Edible";
       string name02 = "Not Edible";
-      Cuisine newCuisine1 = new Cuisine(name01);
-      newCuisine1.Save();
-      Cuisine newCuisine2 = new Cuisine(name02);
-      newCuisine2.Save();
-      List<Cuisine> newList = new List<Cuisine> { newCuisine1, newCuisine2 };
+      Stylist newStylist1 = new Stylist(name01);
+      newStylist1.Save();
+      Stylist newStylist2 = new Stylist(name02);
+      newStylist2.Save();
+      List<Stylist> newList = new List<Stylist> { newStylist1, newStylist2 };
 
-      List<Cuisine> result = Cuisine.GetAll();
+      List<Stylist> result = Stylist.GetAll();
 
       CollectionAssert.AreEqual(newList, result);
     }
@@ -46,86 +46,86 @@ namespace RestaurantList.Tests
 
 
     [TestMethod]
-    public void CuisineConstructor_CreatesInstanceOfCuisine_Cuisine()
+    public void StylistConstructor_CreatesInstanceOfStylist_Stylist()
     {
-      Cuisine newCuisine = new Cuisine("test cuisine");
-      Assert.AreEqual(typeof(Cuisine), newCuisine.GetType());
+      Stylist newStylist = new Stylist("test cuisine");
+      Assert.AreEqual(typeof(Stylist), newStylist.GetType());
     }
 
 
     [TestMethod]
-    public void Save_SavesCuisineToDatabase_CuisineList()
+    public void Save_SavesStylistToDatabase_StylistList()
     {
-      Cuisine testCuisine = new Cuisine("Edible Food");
-      testCuisine.Save();
+      Stylist testStylist = new Stylist("Edible Food");
+      testStylist.Save();
 
-      List<Cuisine> result = Cuisine.GetAll();
-      List<Cuisine> testList = new List<Cuisine>{testCuisine};
+      List<Stylist> result = Stylist.GetAll();
+      List<Stylist> testList = new List<Stylist>{testStylist};
 
       CollectionAssert.AreEqual(testList, result);
     }
 
     [TestMethod]
-    public void Save_DatabaseAssignsIdToCuisine_Id()
+    public void Save_DatabaseAssignsIdToStylist_Id()
     {
       //Arrange
-      Cuisine testCuisine = new Cuisine("Edible Food");
-      testCuisine.Save();
+      Stylist testStylist = new Stylist("Edible Food");
+      testStylist.Save();
 
       //Act
-      Cuisine savedCuisine = Cuisine.GetAll()[0];
+      Stylist savedStylist = Stylist.GetAll()[0];
 
-      int result = savedCuisine.Id;
-      int testId = testCuisine.Id;
+      int result = savedStylist.Id;
+      int testId = testStylist.Id;
 
       //Assert
       Assert.AreEqual(testId, result);
     }
 
     [TestMethod]
-    public void Find_ReturnsCuisineInDatabase_Cuisine()
+    public void Find_ReturnsStylistInDatabase_Stylist()
     {
       //Arrange
-      Cuisine testCuisine = new Cuisine("Edible Food");
-      testCuisine.Save();
+      Stylist testStylist = new Stylist("Good Stylist");
+      testStylist.Save();
 
       //Act
-      Cuisine foundCuisine = Cuisine.Find(testCuisine.Id);
+      Stylist foundStylist = Stylist.Find(testStylist.Id);
 
       //Assert
-      Assert.AreEqual(testCuisine, foundCuisine);
+      Assert.AreEqual(testStylist, foundStylist);
     }
 
     [TestMethod]
-    public void GetRestaurants_ReturnsEmptyRestaurantList_RestaurantList()
+    public void GetClients_ReturnsEmptyHairSalon_HairSalon()
     {
       //Arrange
-      string name = "Food Restaurant";
-      Cuisine newCuisine = new Cuisine(name);
-      List<Restaurant> newList = new List<Restaurant> { };
+      string name = "Food Client";
+      Stylist newStylist = new Stylist(name);
+      List<Client> newList = new List<Client> { };
 
       //Act
-      List<Restaurant> result = newCuisine.GetRestaurants();
+      List<Client> result = newStylist.GetClients();
 
       //Assert
       CollectionAssert.AreEqual(newList, result);
     }
 
     [TestMethod]
-    public void GetRestaurants_RetrievesAllRestaurantsWithCuisine_RestaurantList()
+    public void GetClients_RetrievesAllClientsWithStylist_HairSalon()
     {
       //Arrange, Act
-      Cuisine testCuisine = new Cuisine("NonEdible Food");
-      testCuisine.Save();
-      Restaurant firstRestaurant = new Restaurant("Food Restaurant", testCuisine.Id);
-      firstRestaurant.Save();
-      Restaurant secondRestaurant = new Restaurant("Good Restaurant", testCuisine.Id);
-      secondRestaurant.Save();
-      List<Restaurant> testRestaurantList = new List<Restaurant> {firstRestaurant, secondRestaurant};
-      List<Restaurant> resultRestaurantList = testCuisine.GetRestaurants();
+      Stylist testStylist = new Stylist("NonEdible Food");
+      testStylist.Save();
+      Client firstClient = new Client("Test Client", testStylist.Id);
+      firstClient.Save();
+      Client secondClient = new Client("Test Client 2", testStylist.Id);
+      secondClient.Save();
+      List<Client> testHairSalon = new List<Client> {firstClient, secondClient};
+      List<Client> resultHairSalon = testStylist.GetClients();
 
       //Assert
-      CollectionAssert.AreEqual(testRestaurantList, resultRestaurantList);
+      CollectionAssert.AreEqual(testHairSalon, resultHairSalon);
     }
 
 
