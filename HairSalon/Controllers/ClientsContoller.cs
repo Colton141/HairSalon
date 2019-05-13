@@ -1,81 +1,81 @@
 using Microsoft.AspNetCore.Mvc;
-using RestaurantList.Models;
+using HairSalonList.Models;
 using System.Collections.Generic;
 using System;
 
-namespace RestaurantList.Controllers
+namespace HairSalonList.Controllers
 {
-  public class RestaurantsController : Controller
+  public class ClientsController : Controller
   {
 
-    [HttpGet("/cuisines/{cuisineId}/restaurants/new")]
-    public ActionResult New(int cuisineId)
+    [HttpGet("/stylists/{stylistId}/clients/new")]
+    public ActionResult New(int stylistId)
     {
-       Cuisine cuisine = Cuisine.Find(cuisineId);
-       return View(cuisine);
+       Stylist stylist = Stylist.Find(stylistId);
+       return View(stylist);
     }
 
-    [HttpGet("/cuisines/{cuisineId}/restaurants/{restaurantId}")]
-    public ActionResult Show(int cuisineId, int restaurantId)
+    [HttpGet("/stylists/{stylistId}/clients/{clientId}")]
+    public ActionResult Show(int stylistId, int clientId)
     {
-      Restaurant restaurant = Restaurant.Find(restaurantId);
+      Client client = Client.Find(clientId);
       Dictionary<string, object> model = new Dictionary<string, object>();
-      Cuisine cuisine = Cuisine.Find(cuisineId);
-      model.Add("restaurant", restaurant);
-      model.Add("cuisine", cuisine);
+      Stylist stylist = Stylist.Find(stylistId);
+      model.Add("client", client);
+      model.Add("stylist", stylist);
       return View(model);
     }
 
-    [HttpPost("/restaurants/delete")]
+    [HttpPost("/clients/delete")]
     public ActionResult DeleteAll()
     {
-      Restaurant.ClearAll();
+      Client.ClearAll();
       return View();
     }
 
-    [HttpPost("/cuisines/{cuisineId}/restaurants/{restaurantId}/delete")]
-    public ActionResult Delete(int cuisineId, int restaurantId)
+    [HttpPost("/stylists/{stylistId}/clients/{clientId}/delete")]
+    public ActionResult Delete(int stylistId, int clientId)
     {
-      Restaurant restaurant = Restaurant.Find(restaurantId);
-      restaurant.DeleteRestaurant();
+      Client client = Client.Find(clientId);
+      client.DeleteClient();
       Dictionary<string, object> model = new Dictionary<string, object>();
-      Cuisine cuisine = Cuisine.Find(cuisineId);
-      model.Add("cuisine", cuisine);
-      model.Add("restaurant", restaurant);
-      return RedirectToAction("Show", "Cuisines");
+      Stylist stylist = Stylist.Find(stylistId);
+      model.Add("stylist", stylist);
+      model.Add("client", client);
+      return RedirectToAction("Show", "Stylists");
     }
 
-    [HttpGet("/cuisines/{cuisineId}/restaurants/{restaurantId}/edit")]
-    public ActionResult Edit(int cuisineId, int restaurantId)
+    [HttpGet("/stylists/{stylistId}/clients/{clientId}/edit")]
+    public ActionResult Edit(int stylistId, int clientId)
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
-      Cuisine cuisine = Cuisine.Find(cuisineId);
-      model.Add("cuisine", cuisine);
-      Restaurant restaurant = Restaurant.Find(restaurantId);
-      model.Add("restaurant", restaurant);
+      Stylist stylist = Stylist.Find(stylistId);
+      model.Add("stylist", stylist);
+      Client client = Client.Find(clientId);
+      model.Add("client", client);
       return View(model);
     }
 
-    [HttpPost("/cuisines/{cuisineId}/restaurants/{restaurantId}")]
-    public ActionResult Update(int cuisineId, int restaurantId, string newName)
+    [HttpPost("/stylists/{stylistId}/clients/{clientId}")]
+    public ActionResult Update(int stylistId, int clientId, string newName)
     {
-      Restaurant restaurant = Restaurant.Find(restaurantId);
-      restaurant.Edit(newName);
+      Client client = Client.Find(clientId);
+      client.Edit(newName);
       Dictionary<string, object> model = new Dictionary<string, object>();
-      Cuisine cuisine = Cuisine.Find(cuisineId);
-      model.Add("cuisine", cuisine);
-      model.Add("restaurant", restaurant);
+      Stylist stylist = Stylist.Find(stylistId);
+      model.Add("stylist", stylist);
+      model.Add("client", client);
       return View("Show", model);
     }
 
-    // [HttpGet("/cuisines/{id}")]
+    // [HttpGet("/stylists/{id}")]
     // public ActionResult Show(int id)
     // {
     //   Dictionary<string, object> model = new Dictionary<string, object>();
-    //   Cuisine selectedCuisine = Cuisine.Find(id);
-    //   List<Restaurant> cuisineRestaurants = selectedCuisine.GetRestaurants();
-    //   model.Add("cuisine", selectedCuisine);
-    //   model.Add("restaurants", cuisineRestaurants);
+    //   Stylist selectedStylist = Stylist.Find(id);
+    //   List<Client> stylistClients = selectedStylist.GetClients();
+    //   model.Add("stylist", selectedStylist);
+    //   model.Add("clients", stylistClients);
     //   return View(model);
     // }
   }

@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HairSalon.Models;
+using HairSalonList.Models;
 using System.Collections.Generic;
 using System;
 
-namespace HairSalon.Tests
+namespace HairSalonListList.Tests
 {
   [TestClass]
   public class StylistTest: IDisposable
@@ -30,8 +30,8 @@ namespace HairSalon.Tests
     [TestMethod]
     public void GetAll_ReturnsAllStylistObjects_StylistList()
     {
-      string name01 = "Edible";
-      string name02 = "Not Edible";
+      string name01 = "Chad";
+      string name02 = "Steve";
       Stylist newStylist1 = new Stylist(name01);
       newStylist1.Save();
       Stylist newStylist2 = new Stylist(name02);
@@ -48,7 +48,7 @@ namespace HairSalon.Tests
     [TestMethod]
     public void StylistConstructor_CreatesInstanceOfStylist_Stylist()
     {
-      Stylist newStylist = new Stylist("test cuisine");
+      Stylist newStylist = new Stylist("test stylist");
       Assert.AreEqual(typeof(Stylist), newStylist.GetType());
     }
 
@@ -56,7 +56,7 @@ namespace HairSalon.Tests
     [TestMethod]
     public void Save_SavesStylistToDatabase_StylistList()
     {
-      Stylist testStylist = new Stylist("Edible Food");
+      Stylist testStylist = new Stylist("Chad");
       testStylist.Save();
 
       List<Stylist> result = Stylist.GetAll();
@@ -97,7 +97,7 @@ namespace HairSalon.Tests
     }
 
     [TestMethod]
-    public void GetClients_ReturnsEmptyHairSalon_HairSalon()
+    public void GetClients_ReturnsEmptyHairSalonList_HairSalonList()
     {
       //Arrange
       string name = "Food Client";
@@ -112,7 +112,7 @@ namespace HairSalon.Tests
     }
 
     [TestMethod]
-    public void GetClients_RetrievesAllClientsWithStylist_HairSalon()
+    public void GetClients_RetrievesAllClientsWithStylist_HairSalonList()
     {
       //Arrange, Act
       Stylist testStylist = new Stylist("NonEdible Food");
@@ -121,11 +121,11 @@ namespace HairSalon.Tests
       firstClient.Save();
       Client secondClient = new Client("Test Client 2", testStylist.Id);
       secondClient.Save();
-      List<Client> testHairSalon = new List<Client> {firstClient, secondClient};
-      List<Client> resultHairSalon = testStylist.GetClients();
+      List<Client> testHairSalonList = new List<Client> {firstClient, secondClient};
+      List<Client> resultHairSalonList = testStylist.GetClients();
 
       //Assert
-      CollectionAssert.AreEqual(testHairSalon, resultHairSalon);
+      CollectionAssert.AreEqual(testHairSalonList, resultHairSalonList);
     }
 
 

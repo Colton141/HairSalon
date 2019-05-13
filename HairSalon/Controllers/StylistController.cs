@@ -1,66 +1,66 @@
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using RestaurantList.Models;
+using HairSalonList.Models;
 
-namespace RestaurantList.Controllers
+namespace HairSalonList.Controllers
 {
-  public class CuisinesController : Controller
+  public class StylistsController : Controller
   {
 
-    [HttpGet("/cuisines")]
+    [HttpGet("/stylists")]
     public ActionResult Index()
     {
-      List<Cuisine> allCuisines = Cuisine.GetAll();
-      return View(allCuisines);
+      List<Stylist> allStylists = Stylist.GetAll();
+      return View(allStylists);
     }
 
-    [HttpGet("/cuisines/new")]
+    [HttpGet("/stylists/new")]
     public ActionResult New()
     {
       return View();
     }
 
-    [HttpPost("/cuisines")]
-    public ActionResult Create(string cuisineName)
+    [HttpPost("/stylists")]
+    public ActionResult Create(string stylistName)
     {
-      Cuisine newCuisine = new Cuisine(cuisineName);
-      List<Cuisine> allCuisines = Cuisine.GetAll();
-      newCuisine.Save();
+      Stylist newStylist = new Stylist(stylistName);
+      List<Stylist> allStylists = Stylist.GetAll();
+      newStylist.Save();
       return RedirectToAction("Index");
     }
 
-    [HttpGet("/cuisines/{id}")]
+    [HttpGet("/stylists/{id}")]
     public ActionResult Show(int id)
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
-      Cuisine selectedCuisine = Cuisine.Find(id);
-      List<Restaurant> cuisineRestaurants = selectedCuisine.GetRestaurants();
-      model.Add("cuisine", selectedCuisine);
-      model.Add("cuisineRestaurants", cuisineRestaurants);
-      return View(selectedCuisine);
+      Stylist selectedStylist = Stylist.Find(id);
+      List<Client> stylistClients = selectedStylist.GetClients();
+      model.Add("stylist", selectedStylist);
+      model.Add("stylistClients", stylistClients);
+      return View(selectedStylist);
     }
 
-    [HttpPost("/cuisines/{cuisineId}/restaurants")]
-    public ActionResult Create(int cuisineId, string restaurantName)
+    [HttpPost("/stylists/{stylistId}/clients")]
+    public ActionResult Create(int stylistId, string clientName)
     {
-      Cuisine foundCuisine = Cuisine.Find(cuisineId);
-      Restaurant newRestaurant = new Restaurant(restaurantName, cuisineId);
-      newRestaurant.Save();
-      foundCuisine.GetRestaurants();
-      // List<Restaurant> cuisineRestaurants = foundCuisine.GetRestaurants;
-      // model.Add("restaurants", cuisineRestaurants);
-      // model.Add("cuisine", foundCuisine);
-      return View("Show", foundCuisine);
+      Stylist foundStylist = Stylist.Find(stylistId);
+      Client newClient = new Client(clientName, stylistId);
+      newClient.Save();
+      foundStylist.GetClients();
+      // List<Client> stylistClients = foundStylist.GetClients;
+      // model.Add("clients", stylistClients);
+      // model.Add("stylist", foundStylist);
+      return View("Show", foundStylist);
     }
 
-    [HttpPost("/cuisines/{cuisineId}/delete")]
-    public ActionResult Delete(int cuisineId)
+    [HttpPost("/stylists/{stylistId}/delete")]
+    public ActionResult Delete(int stylistId)
     {
-      Cuisine cuisine = Cuisine.Find(cuisineId);
-      cuisine.DeleteCuisine();
+      Stylist stylist = Stylist.Find(stylistId);
+      stylist.DeleteStylist();
       Dictionary<string, object> model = new Dictionary<string, object>();
-      model.Add("cuisine", cuisine);
+      model.Add("stylist", stylist);
       return RedirectToAction("Index");
     }
 

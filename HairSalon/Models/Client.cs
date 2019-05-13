@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System;
 using MySql.Data.MySqlClient;
 
-namespace HairSalon.Models
+namespace HairSalonList.Models
 {
   public class Client
   {
@@ -39,14 +39,14 @@ namespace HairSalon.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM restaurants;";
+      cmd.CommandText = @"SELECT * FROM clients;";
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        int restaurantId = rdr.GetInt32(0);
-        string restaurantName = rdr.GetString(1);
-        int restaurantHairStylistId = rdr.GetInt32(2);
-        Client newClient = new Client(restaurantName, restaurantHairStylistId, restaurantId);
+        int clientId = rdr.GetInt32(0);
+        string clientName = rdr.GetString(1);
+        int clientHairStylistId = rdr.GetInt32(2);
+        Client newClient = new Client(clientName, clientHairStylistId, clientId);
         allClients.Add(newClient);
       }
       conn.Close();
@@ -64,7 +64,7 @@ namespace HairSalon.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM restaurants;";
+      cmd.CommandText = @"DELETE FROM clients;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
@@ -94,7 +94,7 @@ namespace HairSalon.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO restaurants (name, hairStylist_id) VALUES (@name, @hairStylist_id);";
+      cmd.CommandText = @"INSERT INTO clients (name, hairStylist_id) VALUES (@name, @hairStylist_id);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this.Name;
@@ -117,22 +117,22 @@ namespace HairSalon.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM restaurants WHERE id = (@searchId);";
+      cmd.CommandText = @"SELECT * FROM clients WHERE id = (@searchId);";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = id;
       cmd.Parameters.Add(searchId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
-      int restaurantId = 0;
-      string restaurantName = "";
-      int restaurantHairStylistId = 0;
+      int clientId = 0;
+      string clientName = "";
+      int clientHairStylistId = 0;
       while(rdr.Read())
       {
-        restaurantId = rdr.GetInt32(0);
-        restaurantName = rdr.GetString(1);
-        restaurantHairStylistId = rdr.GetInt32(2);
+        clientId = rdr.GetInt32(0);
+        clientName = rdr.GetString(1);
+        clientHairStylistId = rdr.GetInt32(2);
       }
-      Client newClient = new Client(restaurantName, restaurantHairStylistId, restaurantId);
+      Client newClient = new Client(clientName, clientHairStylistId, clientId);
       conn.Close();
       if (conn != null)
       {
@@ -146,7 +146,7 @@ namespace HairSalon.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"UPDATE restaurants SET name = @newName WHERE id = @searchId;";
+      cmd.CommandText = @"UPDATE clients SET name = @newName WHERE id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = Id;
@@ -169,7 +169,7 @@ namespace HairSalon.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM restaurants WHERE id = @thisId;";
+      cmd.CommandText = @"DELETE FROM clients WHERE id = @thisId;";
       MySqlParameter thisId = new MySqlParameter();
       thisId.ParameterName = "@thisId";
       thisId.Value = Id;

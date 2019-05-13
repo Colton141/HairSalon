@@ -1,14 +1,14 @@
-@using RestaurantList.Models;
+@using HairSalonList.Models;
 
-<h1>To Do List Restaurant Details: </h1>
+<h1>To Do List Client Details: </h1>
 
-<h2>@Model["restaurant"].Name</h2>
-<h3>Cuisine: @Model["cuisine"].Name</h3>
+<h2>@Model["client"].Name</h2>
+<h3>Stylist: @Model["stylist"].Name</h3>
 
-<form action="/cuisines/@Model["cuisine"].Id/restaurants/@Model["restaurant"].Id/delete" method="post">
-  <button type="submit" name="button">Remove This Restaurant</button>
+<form action="/stylists/@Model["stylist"].Id/clients/@Model["client"].Id/delete" method="post">
+  <button type="submit" name="button">Remove This Client</button>
 </form>
 
-<a href='/cuisines/@Model["cuisine"].Id/restaurants/@Model["restaurant"].Id/edit'>Edit this Restaurant</a>
-<a href='/cuisines/@Model["cuisine"].Id/restaurants/new'>Add another restaurant</a>
-<a href='/cuisines'>View all cuisines</a>
+<a href='/stylists/@Model["stylist"].Id/clients/@Model["client"].Id/edit'>Edit this Client</a>
+<a href='/stylists/@Model["stylist"].Id/clients/new'>Add another client</a>
+<a href='/stylists'>View all stylists</a>

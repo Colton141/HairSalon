@@ -5,13 +5,13 @@
     <title>Hello friend!</title>
   </head>
   <body>
-    <h1>Add a new restaurant to @Model.Name</h1>
+    <h1>Add a new client to @Model.Name</h1>
 
-<form action='/cuisines/@Model.Id/restaurants' method='post'>
-  <input id='cuisineId' name='cuisineId' type='hidden' value='@Model.Id'>
-  <label for='restaurantName'>Restaurant Name</label>
-  <input id='restaurantName' name='restaurantName' type='text'>
-  <button type='submit'>Add restaurant</button>
+<form action='/stylists/@Model.Id/clients' method='post'>
+  <input id='stylistId' name='stylistId' type='hidden' value='@Model.Id'>
+  <label for='clientName'>Client Name</label>
+  <input id='clientName' name='clientName' type='text'>
+  <button type='submit'>Add client</button>
 </form>
 
   </body>

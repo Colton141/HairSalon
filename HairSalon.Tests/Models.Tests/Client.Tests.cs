@@ -1,130 +1,130 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestaurantList.Models;
+using HairSalonList.Models;
 using System.Collections.Generic;
 using System;
 
-namespace RestaurantList.Tests
+namespace HairSalonList.Tests
 {
   [TestClass]
-  public class RestaurantTest : IDisposable
+  public class ClientTest : IDisposable
   {
 
     public void Dispose()
     {
-      Restaurant.ClearAll();
+      Client.ClearAll();
     }
 
-    public RestaurantTest()
+    public ClientTest()
     {
-      DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=restaurant_list_test;";
+      DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=colton_lacey_test;";
     }
 
     [TestMethod]
-    public void RestaurantConstructor_CreatesInstanceOfRestaurant_Restaurant()
+    public void ClientConstructor_CreatesInstanceOfClient_Client()
     {
-      Restaurant newRestaurant = new Restaurant("test", 1);
-      Assert.AreEqual(typeof(Restaurant), newRestaurant.GetType());
+      Client newClient = new Client("test", 1);
+      Assert.AreEqual(typeof(Client), newClient.GetType());
     }
 
     [TestMethod]
     public void SetName_SetName_String()
     {
-      string name = "Restaurant Name";
-      Restaurant newRestaurant = new Restaurant(name, 1);
+      string name = "Client Name";
+      Client newClient = new Client(name, 1);
 
-      string updatedName = "Do the dishes";
-      newRestaurant.SetName(updatedName);
-      string result = newRestaurant.Name;
+      string updatedName = "billy jo";
+      newClient.SetName(updatedName);
+      string result = newClient.Name;
 
       Assert.AreEqual(updatedName, result);
     }
 
     [TestMethod]
-    public void GetAll_ReturnsEmptyList_RestaurantList()
+    public void GetAll_ReturnsEmptyList_HairSalonList()
     {
-      List<Restaurant> newList = new List<Restaurant> { };
+      List<Client> newList = new List<Client> { };
 
-      List<Restaurant> result = Restaurant.GetAll();
+      List<Client> result = Client.GetAll();
 
       CollectionAssert.AreEqual(newList, result);
     }
 
     [TestMethod]
-    public void GetAll_ReturnsRestaurants_RestaurantList()
+    public void GetAll_ReturnsClients_HairSalonList()
     {
-      string name01 = "Walk the dog";
-      string name02 = "Wash the dishes";
-      Restaurant newRestaurant1 = new Restaurant(name01, 1);
-      newRestaurant1.Save();
-      Restaurant newRestaurant2 = new Restaurant(name02, 1);
-      newRestaurant2.Save();
-      List<Restaurant> newList = new List<Restaurant> { newRestaurant1, newRestaurant2 };
+      string name01 = "Billy Jo";
+      string name02 = "Bailey";
+      Client newClient1 = new Client(name01, 1);
+      newClient1.Save();
+      Client newClient2 = new Client(name02, 1);
+      newClient2.Save();
+      List<Client> newList = new List<Client> { newClient1, newClient2 };
 
-      List<Restaurant> result = Restaurant.GetAll();
+      List<Client> result = Client.GetAll();
 
       CollectionAssert.AreEqual(newList, result);
     }
 
     [TestMethod]
-    public void Find_ReturnsCorrectRestaurantFromDatabase_Restaurant()
+    public void Find_ReturnsCorrectClientFromDatabase_Client()
     {
-      Restaurant testRestaurant = new Restaurant("Generic Name", 1);
-      testRestaurant.Save();
+      Client testClient = new Client("Generic Name", 1);
+      testClient.Save();
 
-      Restaurant foundRestaurant = Restaurant.Find(testRestaurant.Id);
+      Client foundClient = Client.Find(testClient.Id);
 
-      Assert.AreEqual(testRestaurant, foundRestaurant);
+      Assert.AreEqual(testClient, foundClient);
     }
 
     [TestMethod]
-    public void Equals_ReturnsTrueIfNamesAreTheSame_Restaurant()
+    public void Equals_ReturnsTrueIfNamesAreTheSame_Client()
     {
-      Restaurant firstRestaurant = new Restaurant("Generic Name", 1);
-      Restaurant secondRestaurant = new Restaurant("Generic Name", 1);
+      Client firstClient = new Client("Generic Name", 1);
+      Client secondClient = new Client("Generic Name", 1);
 
-      Assert.AreEqual(firstRestaurant, secondRestaurant);
+      Assert.AreEqual(firstClient, secondClient);
     }
 
     [TestMethod]
-    public void Save_SavesToDatabase_RestaurantList()
+    public void Save_SavesToDatabase_HairSalonList()
     {
-      Restaurant testRestaurant = new Restaurant("Generic Name", 1);
+      Client testClient = new Client("Generic Name", 1);
 
-      testRestaurant.Save();
-      List<Restaurant> result = Restaurant.GetAll();
-      List<Restaurant> testList = new List<Restaurant>{testRestaurant};
+      testClient.Save();
+      List<Client> result = Client.GetAll();
+      List<Client> testList = new List<Client>{testClient};
 
       CollectionAssert.AreEqual(testList, result);
     }
 
     [TestMethod]
-    public void Edit_UpdatesRestaurantInDatabase_String()
+    public void Edit_UpdatesClientInDatabase_String()
     {
-      Restaurant testRestaurant = new Restaurant("Restaurant Name", 1);
-      testRestaurant.Save();
+      Client testClient = new Client("Client Name", 1);
+      testClient.Save();
       string secondName = "Generic Name";
 
-      testRestaurant.Edit(secondName);
-      string result = Restaurant.Find(testRestaurant.Id).Name;
+      testClient.Edit(secondName);
+      string result = Client.Find(testClient.Id).Name;
 
       Assert.AreEqual(secondName, result);
     }
 
     [TestMethod]
-    public void DeleteRestaurant_UpdatesRestaurantInDatabase_String()
+    public void DeleteClient_UpdatesClientInDatabase_String()
     {
-      string firstRestaurant = "Other Name";
-      string secondRestaurant = "Generic Name";
-      Restaurant testRestaurant = new Restaurant(firstRestaurant, 1);
-      Restaurant testRestaurant2 = new Restaurant(secondRestaurant, 1);
-      testRestaurant.Save();
-      testRestaurant2.Save();
+      string firstClient = "Other Name";
+      string secondClient = "Generic Name";
+      Client testClient = new Client(firstClient, 1);
+      Client testClient2 = new Client(secondClient, 1);
+      testClient.Save();
+      testClient2.Save();
 
-      testRestaurant.DeleteRestaurant( );
+      testClient.DeleteClient( );
 
-      int testId = testRestaurant2.Id;
+      int testId = testClient2.Id;
 
-      Assert.AreEqual(testId, Restaurant.GetAll()[0].Id);
+      Assert.AreEqual(testId, Client.GetAll()[0].Id);
     }
 
   }
