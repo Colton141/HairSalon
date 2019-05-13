@@ -1,0 +1,19 @@
+@using RestaurantList.Models;
+
+<h3>Here are all the restaurants in this cuisine:</h3>
+
+<ol>
+
+@foreach (Restaurant restaurant in @Model.GetRestaurants())
+{
+  <li><a href='/cuisines/@Model.Id/restaurants/@restaurant.Id'>@restaurant.Name</a></li>
+}
+</ol>
+
+<form action="/cuisines/@Model.Id/delete" method="post">
+  <button type="submit" name="button">Remove This Cuisine</button>
+</form>
+
+<p><a href='/cuisines/@Model.Id/restaurants/new'>Add a new restaurant</a></p>
+<p><a href='/cuisines'>Return to cuisine list</a></p>
+<p><a href='/'>Return to Main Page</a></p>

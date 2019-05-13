@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Hello friend!</title>
+  </head>
+  <body>
+    <h1>Add a new restaurant to @Model.Name</h1>
+
+<form action='/cuisines/@Model.Id/restaurants' method='post'>
+  <input id='cuisineId' name='cuisineId' type='hidden' value='@Model.Id'>
+  <label for='restaurantName'>Restaurant Name</label>
+  <input id='restaurantName' name='restaurantName' type='text'>
+  <button type='submit'>Add restaurant</button>
+</form>
+
+  </body>
+</html>
