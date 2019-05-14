@@ -1,21 +1,31 @@
-# _Word Counter_
+# _Hair Salon_
 
 #### By _**Colton Lacey**_
 
 ## Description
 
-_A program that will take in a user inputted word and phrase and return how many times that word was used in the phrase._
+_A program that will let a Hair Salon add and remove stylist and their clients from the program._
 
 | Behavior | Input | Output |
 | ------------- |:-------------:| -----:|
-| The program should take in a user input | cat | cat |
-| The program should take in a user inputted sentence | "I walked my cat today." | "I walked my cat today." |
-| The program should look for how many time that word is used in the sentence | cat , I walked my cat today | 1 |
-| The program should return how many times the word was used in the sentence regardless of special characters | cat , I walked my cat today.|  1 |
+| The program should allow employees(stylists) to input new stylists and description into the database | "Colton" | Colton |
+| The program should allow employees input new client with their stylist | "tom" | tom, Stylist: colton |
+| The program should not allow employees to input clients if there are no stylist | -- | -- |
+| The program should let the employees view all the stylist and their description| colton | name, description |
+| The program should let the employees view all the client that a stylist has | colton | tom, bob, john |
+| The program should let employees remove stylist and clients from the lists | -- | -- |
 
 ## Setup/Installation Requirements
 
-* _Run in console_
+* _Clone project from github__
+* _run the fallowing commands in the terminal in order to connect you're database_
+* _"CREATE DATABASE colton_lacey;"_
+* _"USE colton_lacey;"_
+* _"CREATE TABLE stylists (id serial PRIMARY KEY, name VARCHAR(255), description VARCHAR(255));"_
+* _"CREATE TABLE clients (id serial PRIMARY KEY, name VARCHAR(255), stylist_id VARCHAR(255));"_
+* _use "dotnet restore" and "dotnet build" and "dotnet run" in the production folder (HairSalonList)_
+* _View at localhost:5000_
+* _use the UI to modify stylists and clients_
 
 ## Known Bugs
 
@@ -31,10 +41,4 @@ _C#_
 
 ### License
 
-Copyright <2019> <Colton>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Copyright <2019> <Colton Lacey>
