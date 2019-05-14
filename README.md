@@ -41,4 +41,4 @@ _C#_
 
 ### License
 
-Copyright <2019> <Colton Lacey>
+Copyright <2019 Colton Lacey>
