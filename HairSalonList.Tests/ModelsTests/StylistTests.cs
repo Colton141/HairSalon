@@ -3,7 +3,7 @@ using HairSalonList.Models;
 using System.Collections.Generic;
 using System;
 
-namespace HairSalonListList.Tests
+namespace HairSalonList.Tests
 {
   [TestClass]
   public class StylistTest: IDisposable
@@ -21,8 +21,8 @@ namespace HairSalonListList.Tests
     [TestMethod]
     public void Equals_ReturnsTrueIfNamesAreTheSame_Stylist()
     {
-      Stylist firstStylist = new Stylist("Edible");
-      Stylist secondStylist = new Stylist("Edible");
+      Stylist firstStylist = new Stylist("Chad");
+      Stylist secondStylist = new Stylist("Chad");
 
       Assert.AreEqual(firstStylist, secondStylist);
     }
@@ -69,7 +69,7 @@ namespace HairSalonListList.Tests
     public void Save_DatabaseAssignsIdToStylist_Id()
     {
       //Arrange
-      Stylist testStylist = new Stylist("Edible Food");
+      Stylist testStylist = new Stylist("Billy Jo");
       testStylist.Save();
 
       //Act
@@ -100,7 +100,7 @@ namespace HairSalonListList.Tests
     public void GetClients_ReturnsEmptyHairSalonList_HairSalonList()
     {
       //Arrange
-      string name = "Food Client";
+      string name = "Client";
       Stylist newStylist = new Stylist(name);
       List<Client> newList = new List<Client> { };
 
@@ -115,7 +115,7 @@ namespace HairSalonListList.Tests
     public void GetClients_RetrievesAllClientsWithStylist_HairSalonList()
     {
       //Arrange, Act
-      Stylist testStylist = new Stylist("NonEdible Food");
+      Stylist testStylist = new Stylist("Bailey");
       testStylist.Save();
       Client firstClient = new Client("Test Client", testStylist.Id);
       firstClient.Save();

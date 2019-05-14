@@ -94,13 +94,13 @@ namespace HairSalonList.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO clients (name, hairStylist_id) VALUES (@name, @hairStylist_id);";
+      cmd.CommandText = @"INSERT INTO clients (name, stylist_id) VALUES (@name, @stylist_id);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this.Name;
       cmd.Parameters.Add(name);
       MySqlParameter hairStylistId = new MySqlParameter();
-      hairStylistId.ParameterName = "@hairStylist_id";
+      hairStylistId.ParameterName = "@stylist_id";
       hairStylistId.Value = this.HairStylistId;
       cmd.Parameters.Add(hairStylistId);
       cmd.ExecuteNonQuery();

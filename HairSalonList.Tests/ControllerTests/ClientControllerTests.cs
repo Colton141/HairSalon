@@ -8,14 +8,14 @@ using HairSalonList.Models;
 namespace HairSalonList.Tests
 {
     [TestClass]
-    public class ClientControllerTest
+    public class StylistControllerTest
     {
 
       [TestMethod]
       public void Create_ReturnsCorrectActionType_RedirectToActionResult()
       {
         //Arrange
-        ClientsController controller = new ClientsController();
+        StylistsController controller = new StylistsController();
 
         //Act
         IActionResult view = controller.Create("Billy Jo");
@@ -28,12 +28,12 @@ namespace HairSalonList.Tests
       public void Create_RedirectsToCorrectAction_Index()
       {
         //Arrange
-        ClientsController controller = new ClientsController();
+        StylistsController controller = new StylistsController();
         RedirectToActionResult actionResult = controller.Create("Billy Jo") as RedirectToActionResult;
 
         //Act
         string result = actionResult.ActionName;
-
+      
         //Assert
         Assert.AreEqual(result, "Index");
       }

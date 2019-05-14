@@ -1,4 +1,4 @@
-sing System;
+using System;
 using MySql.Data.MySqlClient;
 using HairSalonList;
 
