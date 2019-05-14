@@ -8,10 +8,12 @@ namespace HairSalonList.Models
   {
     public string Name { get; set;}
     public int Id { get; set;}
+    public string Description { get; set;}
 
-    public Stylist(string stylistName, int id = 0)
+    public Stylist(string stylistName, string stylistdescription, int id = 0)
     {
       Name = stylistName;
+      Description = stylistdescription;
       Id = id;
     }
 
@@ -35,11 +37,15 @@ namespace HairSalonList.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO stylist (name) VALUES (@name);";
+      cmd.CommandText = @"INSERT INTO stylist (name, description) VALUES (@name, @description);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this.Name;
       cmd.Parameters.Add(name);
+      MySqlParameter description = new MySqlParameter();
+      description.ParameterName = "@description";
+      description.Value = this.Description;
+      cmd.Parameters.Add(description);
       cmd.ExecuteNonQuery();
       Id = (int) cmd.LastInsertedId;
       conn.Close();
@@ -66,7 +72,8 @@ namespace HairSalonList.Models
       {
         int StylistId = rdr.GetInt32(0);
         string StylistName = rdr.GetString(1);
-        Stylist newStylist = new Stylist(StylistName, StylistId); // <-- This line now has two arguments
+        string StylistDescription = rdr.GetString(2);
+        Stylist newStylist = new Stylist(StylistName, StylistDescription, StylistId); // <-- This line now has two arguments
         allCategories.Add(newStylist);
       }
       conn.Close();
@@ -91,12 +98,14 @@ namespace HairSalonList.Models
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       int StylistId = 0;
       string StylistName = "";
+      string StylistDescription = "";
       while(rdr.Read())
       {
         StylistId = rdr.GetInt32(0);
         StylistName = rdr.GetString(1);
+        StylistDescription = rdr.GetString(2);
       }
-      Stylist newStylist = new Stylist(StylistName, StylistId);
+      Stylist newStylist = new Stylist(StylistName, StylistDescription, StylistId);
       conn.Close();
       if (conn != null)
       {

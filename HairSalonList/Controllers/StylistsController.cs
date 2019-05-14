@@ -22,9 +22,9 @@ namespace HairSalonList.Controllers
     }
 
     [HttpPost("/stylists")]
-    public ActionResult Create(string stylistName)
+    public ActionResult Create(string stylistName, string stylistdescription)
     {
-      Stylist newStylist = new Stylist(stylistName);
+      Stylist newStylist = new Stylist(stylistName, stylistdescription);
       List<Stylist> allStylists = Stylist.GetAll();
       newStylist.Save();
       return RedirectToAction("Index");
