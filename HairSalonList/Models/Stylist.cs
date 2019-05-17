@@ -191,6 +191,17 @@ namespace HairSalonList.Models
         conn.Dispose();
       }
     }
+    public static void AssignSpecialty(int authorId, int bookId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO author_books (author_id, book_id) VALUES (@authorId, @bookId);";
+      cmd.Parameters.AddWithValue("@authorId", authorId);
+      cmd.Parameters.AddWithValue("@bookId", bookId);
+      cmd.ExecuteNonQuery();
+      conn.Close();
+    }
 
   }
 }
