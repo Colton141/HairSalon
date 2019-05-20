@@ -84,7 +84,7 @@ namespace HairSalonList.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM specialtys WHERE id = @SpecialtyId; DELETE FROM patron_specialtys WHERE specialty_id = @SpecialtyId;";
+      cmd.CommandText = @"DELETE FROM specialtys WHERE id = @SpecialtyId; DELETE FROM stylist_specialtys WHERE specialty_id = @SpecialtyId;";
       cmd.Parameters.AddWithValue("@SpecialtyId", this.Id);
       cmd.ExecuteNonQuery();
       if (conn != null)
@@ -99,7 +99,7 @@ namespace HairSalonList.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM patron_specialtys WHERE specialty_id = @SpecialtyId;";
+      cmd.CommandText = @"DELETE FROM stylist_specialtys WHERE specialty_id = @SpecialtyId;";
       MySqlParameter specialtyIdParameter = new MySqlParameter();
       specialtyIdParameter.ParameterName = "@SpecialtyId";
       specialtyIdParameter.Value = this.Id;
@@ -112,14 +112,14 @@ namespace HairSalonList.Models
     }
 
 
-    public List<Author> GetAuthors(int id)
+    public List<Stylist> GetStylists(int id)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT author.* FROM specialtys
-      JOIN author_specialtys ON (specialtys.id = author_specialtys.specialty_id)
-      JOIN author ON (author_specialtys.author_id = author.id)
+      cmd.CommandText = @"SELECT stylist.* FROM specialtys
+      JOIN stylist_specialtys ON (specialtys.id = stylist_specialtys.specialty_id)
+      JOIN stylist ON (stylist_specialtys.stylist_id = stylist.id)
       WHERE specialtys.id = @SpecialtyId;";
       // MySqlParameter SpecialtyIdParameter = new MySqlParameter();
       // SpecialtyIdParameter.ParameterName = "@SpecialtyId";
@@ -127,20 +127,20 @@ namespace HairSalonList.Models
       // cmd.Parameters.Add(SpecialtyIdParameter);
       cmd.Parameters.AddWithValue("@SpecialtyId", id);
       MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
-      List<Author> authors = new List<Author>{};
+      List<Stylist> stylists = new List<Stylist>{};
       while(rdr.Read())
       {
-        int thisAuthorId = rdr.GetInt32(0);
-        string authorName = rdr.GetString(1);
-        Author foundAuthor = new Author(authorName, thisAuthorId);
-        authors.Add(foundAuthor);
+        int thisStylistId = rdr.GetInt32(0);
+        string stylistName = rdr.GetString(1);
+        Stylist foundStylist = new Stylist(stylistName, thisStylistId);
+        stylists.Add(foundStylist);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return authors;
+      return stylists;
     }
   }
 }

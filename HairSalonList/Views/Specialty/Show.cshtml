@@ -1,0 +1,24 @@
+@using HairSalonList.Models;
+
+<h3>Here are all the stylists for this Specialty:</h3>
+
+<h3>Name: @Model.Name<br>
+Description: @Model.Description</h3>
+<ol>
+
+@foreach (Stylist stylist in @Model.GetStylists())
+{
+  <li><a href='/specialtys/@Model.Id/stylists/@stylist.Id'>@stylist.Name</a></li>
+}
+</ol>
+<h3>Specialty description:</h3>
+
+
+
+<form action="/specialtys/@Model.Id/delete" method="post">
+  <button type="submit" name="button">Remove This Specialty</button>
+</form>
+
+<p><a href='/specialtys/@Model.Id/stylists/new'>Add a new stylist</a></p>
+<p><a href='/specialtys'>Return to specialty list</a></p>
+<p><a href='/'>Return to Main Page</a></p>
