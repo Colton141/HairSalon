@@ -130,5 +130,30 @@ namespace HairSalonList.Tests
     }
 
 
+    [TestMethod]
+    public void GetStylist()
+    {
+    Specialty testSpecialty = new Specialty("Bailey");
+    testSpecialty.Save();
+    Stylist firstStylist = new Stylist("Test Stylist", "Test1", 1);
+    firstStylist.Save();
+    Stylist secondStylist = new Stylist("Test Stylist 2", "Test2", 2);
+    secondStylist.Save();
+
+    testSpecialty.AddStylist(firstStylist);
+    List<Stylist> testHairSalonList = new List<Stylist> {firstStylist};
+    List<Stylist> resultHairSalonList = testSpecialty.GetStylists(1);
+
+    //Assert
+    CollectionAssert.AreEqual(testHairSalonList, resultHairSalonList);
+  }
+
+
+
+
+    // [TestMethod] public void GetStylists() { //Arrange, Act //create a stylist //create a specialty //add a stylist to a specialty or vice versa (AssignSpecialty method) // create test list of specialties with that specialty // run the GetStylists method on your stylist object //Assert
+    // }
+
+
   }
 }

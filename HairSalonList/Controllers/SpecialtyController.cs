@@ -4,16 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Library.Models;
+using HairSalonList.Models;
 
-namespace Library.Controllers
+namespace HairSalonList.Controllers
 {
-  public class BookController : Controller
+  public class SpecialtyController : Controller
   {
     public IActionResult Index()
     {
-      List<Book> allBooks = Book.GetAll();
-      return View(allBooks);
+      List<Specialty> allSpecialtys = Specialty.GetAll();
+      return View(allSpecialtys);
     }
 
     public IActionResult New()
@@ -21,34 +21,34 @@ namespace Library.Controllers
       return View();
     }
 
-    [HttpPost("/book/create")]
-    public IActionResult Create(string bookTitle)
+    [HttpPost("/specialty/create")]
+    public IActionResult Create(string specialtyName)
     {
-      Book newBook = new Book(bookTitle);
-      newBook.Save();
+      Specialty newSpecialty = new Specialty(specialtyName);
+      newSpecialty.Save();
       return RedirectToAction("Index");
     }
 
-    [HttpPost("/books/{bookId}/delete-book")]
-    public ActionResult DeleteBook(int bookId)
+    [HttpPost("/specialtys/{specialtyId}/delete-specialty")]
+    public ActionResult DeleteSpecialty(int specialtyId)
     {
-      Book book = Book.Find(bookId);
-      book.Delete();
+      Specialty specialty = Specialty.Find(specialtyId);
+      specialty.Delete();
       // Dictionary<string, object> model = new Dictionary<string, object>();
-      // Author foundAuthor = Author.Find(authorId);
-      // List<Book> authorBooks = foundAuthor.GetBooks();
-      // model.Add("book", authorBooks);
+      // Stylist foundStylist = Stylist.Find(authorId);
+      // List<Specialty> authorSpecialtys = foundStylist.GetSpecialtys();
+      // model.Add("specialty", authorSpecialtys);
       return RedirectToAction("Index");
     }
 
-    [HttpGet("/book/{id}")]
+    [HttpGet("/specialty/{id}")]
     public ActionResult Show(int id)
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
-      Book selectedBook = Book.Find(id);
-      List<Author> bookAuthors = selectedBook.GetAuthors(id);
-      model.Add("selectedBook", selectedBook);
-      model.Add("bookAuthors", bookAuthors);
+      Specialty selectedSpecialty = Specialty.Find(id);
+      List<Stylist> specialtyStylists = selectedSpecialty.GetStylists(id);
+      model.Add("selectedSpecialty", selectedSpecialty);
+      model.Add("specialtyStylists", specialtyStylists);
       return View(model);
     }
   }

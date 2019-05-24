@@ -171,6 +171,33 @@ namespace HairSalonList.Models
         conn.Dispose();
       }
     }
+      public List<Specialty> GetSpecialty(int id)
+      {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT specialty.* FROM stlyist JOIN stlyist_specialtys ON (stlyist.id = stlyist_specialtys.stlyist_id) JOIN specialty ON (stlyist_specialtys.specialty_id = specialty.id) WHERE stlyist.id = @stlyistId;";
+        // MySqlParameter SpecialtyIdParameter = new MySqlParameter();
+        // SpecialtyIdParameter.ParameterName = "@SpecialtyId";
+        // SpecialtyIdParameter.Value = _id;
+        // cmd.Parameters.Add(SpecialtyIdParameter);
+        cmd.Parameters.AddWithValue("@SpecialtyId", id);
+        MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+        List<Specialty> specialty = new List<Specialty>{};
+        while(rdr.Read())
+        {
+          int thisSpecialtyId = rdr.GetInt32(0);
+          string SpecialtyName = rdr.GetString(1);
+          Specialty foundSpecialty = new Specialty(SpecialtyName, thisSpecialtyId);
+          specialty.Add(foundSpecialty);
+        }
+        conn.Close();
+        if (conn != null)
+        {
+          conn.Dispose();
+        }
+        return specialty;
+      }
 
     public void DeleteStylist()
     {
@@ -191,14 +218,14 @@ namespace HairSalonList.Models
         conn.Dispose();
       }
     }
-    public static void AssignSpecialty(int authorId, int bookId)
+    public static void AssignSpecialty(int stlyistId, int specialtyId)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO author_books (author_id, book_id) VALUES (@authorId, @bookId);";
-      cmd.Parameters.AddWithValue("@authorId", authorId);
-      cmd.Parameters.AddWithValue("@bookId", bookId);
+      cmd.CommandText = @"INSERT INTO stlyist_specialtys (stlyist_id, specialty_id) VALUES (@stlyistId, @specialtyId);";
+      cmd.Parameters.AddWithValue("@stlyistId", stlyistId);
+      cmd.Parameters.AddWithValue("@specialtyId", specialtyId);
       cmd.ExecuteNonQuery();
       conn.Close();
     }

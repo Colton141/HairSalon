@@ -1,9 +1,20 @@
 @using HairSalonList.Models;
-
 <h3>Here are all the stylists for this Specialty:</h3>
 
 <h3>Name: @Model.Name<br>
 Description: @Model.Description</h3>
+
+
+@if(Model["specialtyStylists"].Count != 0)
+{
+  <ul>
+  @foreach(var Stylist in Model["specialtyStylists"])
+  {
+    <li>@Stylist.Name</li>
+  }
+  </ul>
+}
+
 <ol>
 
 @foreach (Stylist stylist in @Model.GetStylists())
